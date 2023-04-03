@@ -1,5 +1,9 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox, QVBoxLayout, QRadioButton, QLabel, QLineEdit, \
-    QPushButton, QComboBox, QHBoxLayout, QButtonGroup, QFileDialog
+    QPushButton, QComboBox, QHBoxLayout, QButtonGroup, QFileDialog, QPlainTextEdit
+
+# crossword
+import crossword_generator
+import crossword
 
 
 class GameSelector(QWidget):
@@ -11,15 +15,17 @@ class GameSelector(QWidget):
     def initUI(self):
         # create left-side options
         crossword_radio = QRadioButton("Crossword")
-        placeholder_radio1 = QRadioButton("Placeholder 1")
+        word_search_radio = QRadioButton("Word Search")
         placeholder_radio2 = QRadioButton("Placeholder 2")
+
+
 
         # create crossword options
         grid_size_label = QLabel("Grid Size:")
         self.grid_size_combo = QComboBox()
         self.grid_size_combo.addItems(["10x10", "15x15", "20x20"])
         input_type_label = QLabel("Input Type:")
-        self.user_input_radio = QRadioButton("User Input")
+        self.user_input_radio = QRadioButton("User Input (format as word:hint)")
         self.predefined_category_radio = QRadioButton("Predefined Category")
         self.file_upload_radio = QRadioButton("File Upload")
         self.user_input_radio.setChecked(True)
@@ -45,9 +51,12 @@ class GameSelector(QWidget):
 
         # create user input options
         user_input_label = QLabel("Enter Words:")
-        self.user_input_input = QLineEdit()
-        self.user_input_input.setEnabled(False)
+        # self.user_input_input = QLineEdit()
+        # self.user_input_input.setEnabled(False)
+        # self.user_input_input.setFixedHeight(50)
+        self.user_input_input = QPlainTextEdit()
         self.user_input_input.setFixedHeight(50)
+        self.user_input_input.setPlaceholderText("word, hint")
 
         # create right-side layout
         options_layout = QGridLayout()
@@ -77,7 +86,7 @@ class GameSelector(QWidget):
         # create main layout
         main_layout = QHBoxLayout()
         main_layout.addWidget(crossword_radio)
-        main_layout.addWidget(placeholder_radio1)
+        main_layout.addWidget(word_search_radio)
         main_layout.addWidget(placeholder_radio2)
         main_layout.addLayout(right_layout)
 
@@ -139,9 +148,13 @@ class GameSelector(QWidget):
     def start_crossword(self):
         grid_size = self.grid_size_combo.currentText()
         input_type = ""
+        user_input = None
+        category = None
+        crossword_file = None
+
         if self.user_input_radio.isChecked():
             input_type = "User Input"
-            user_input = self.user_input_input.text()
+            user_input = self.user_input_input.toPlainText()
         elif self.predefined_category_radio.isChecked():
             input_type = "Predefined Category"
             category = self.category_combo.currentText()
@@ -159,8 +172,33 @@ class GameSelector(QWidget):
 
 class Crossword():
     def StartCrossword(self, grid_size, input_type, user_input=None, category=None, crossword_file=None):
-        print(
-            f"size: {grid_size}, input type: {input_type}, user input: {user_input}, category: {category}, file: {crossword_file}")
+        # print(
+        # f"size: {grid_size}, input type: {input_type}, user input: {user_input}, category: {category}, file: {crossword_file}")
+
+        #TODO add the other input types
+        # user input
+        if input_type == "User Input":
+            # get words/hints
+            words_list = []
+            hints_list = []
+            for pair in user_input.split('\n'):
+                if ',' in pair:
+                    word, hint = pair.split(',', 1)
+                    words_list.append(word.strip())
+                    hints_list.append(hint.strip())
+
+            # create crossword grid
+
+            # TODO the lines below returns a blank list for word_locations. that needs to be fixed and then
+            # we can uncomment out RunCrossword and test to make sure it works as intended
+            grid, word_locations = crossword_generator.GetCrossword(words_list, int(grid_size.split('x')[0]),
+                                                                    hints_list)
+
+            print(grid)
+            print(word_locations)
+
+            # set the hints and words and run crossword.py
+            # crossword.RunCrossword(words_list, hints_list, word_locations, grid)
 
 
 if __name__ == '__main__':

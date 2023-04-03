@@ -1,0 +1,7 @@
+sand
+silt
+clay
+rock
+stone
+waves
+castle
