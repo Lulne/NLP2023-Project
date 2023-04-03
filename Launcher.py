@@ -15,6 +15,13 @@ def on_option_change(*args):
     elif option == 'Battleship':
         display_battleship_options()
 
+    if option != 'Word Search':
+        start_button_ws.grid_forget()
+    if option != 'Crossword':
+        start_button.grid_forget()
+    if option != 'Battleship':
+        start_button_bs.grid_forget()
+
 def on_user_input_option_change(*args):
     user_input_option = user_input_options.get()
     category_dropdown.grid_forget()
@@ -80,7 +87,7 @@ def on_word_search_mode_change(*args):
         on_user_input_option_change_ws()
     elif word_search_mode_option == 'Upload':
         file_upload_button_ws.grid(row=1, column=0, pady=5)
-        start_button.grid(row=2, column=0, pady=5)
+        start_button_ws.grid(row=2, column=0, pady=5)
 
 def on_user_input_option_change_bs(*args):
     user_input_option_bs = user_input_options_bs.get()
@@ -104,6 +111,11 @@ def open_file_bs():
     global selected_file_path
     selected_file_path = filedialog.askopenfilename(filetypes=[("Text files", "*.txt")])
     print(selected_file_path)
+
+def open_file_ws():
+    global selected_file_path
+    selected_file_path = filedialog.askopenfilename(filetypes=[("Text files", "*.txt")])
+    print(selected_file_path)
 def insert_newline(event):
     user_text_entry.insert(tk.INSERT, '\n')
 
@@ -121,7 +133,8 @@ def start_word_search_game():
             input_data = category_dropdown_ws.get()
     else:  # Upload mode
         input_method = 'file_upload'
-        input_data = 'path/to/uploaded/file.txt'  # Replace this with the actual file path
+        with open(selected_file_path, 'r') as file:
+            input_data = file.read()
 
     difficulty = difficulty_dropdown.get()
     subprocess.run(['python', 'WordSearch.py', difficulty, input_method, input_data], check=True)
@@ -171,7 +184,7 @@ user_input_options_ws = ttk.Combobox(options_frame, values=["User Input", "Prede
 user_input_options_ws.current(0)
 user_input_options_ws.bind("<<ComboboxSelected>>", on_user_input_option_change_ws)
 
-text_entry_label_ws = ttk.Label(options_frame, text="Word input format: one word per line")
+text_entry_label_ws = ttk.Label(options_frame, text="Word input format: word, hint")
 user_text_entry_ws = tk.Text(options_frame, width=30, height=10, wrap=tk.WORD)
 user_text_entry_ws.bind('<space>', insert_newline)
 
@@ -205,7 +218,7 @@ category_dropdown_ws.current(0)
 num_words_dropdown = ttk.Combobox(options_frame, values=list(range(1, 51)), state="readonly", width=20)
 num_words_dropdown.current(4)
 
-file_upload_button_ws = ttk.Button(options_frame, text="Upload .txt File", command=open_file)
+file_upload_button_ws = ttk.Button(options_frame, text="Upload .txt File", command=open_file_ws)
 
 ship_count_label = ttk.Label(options_frame, text="Ship Count")
 ship_count_dropdown = ttk.Combobox(options_frame, values=list(range(1, 6)), state="readonly", width=20)
