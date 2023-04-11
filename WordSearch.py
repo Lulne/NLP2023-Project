@@ -26,12 +26,39 @@ class WordSearch:
         self.words = []
         self.hints = []
 
-        #input_method
-
-        for line in self.input_data.splitlines():
-            word, hint = line.strip().split(',', 1)
-            self.words.append(word.strip())
-            self.hints.append(hint.strip())
+        if self.input_method == "category":
+            match self.input_data:
+                case "Food":
+                    self.words = ["apple", "banana", "cherry", "pepper", "watermelon", "lime", "lemon"]
+                    self.hints = ["A popular red or green fruit, often associated with teachers",
+                                  "A long, yellow tropical fruit, commonly used in smoothies",
+                                  "A small, round, red stone fruit with a sweet taste",
+                                  "A versatile vegetable that can be sweet or spicy, often used in cooking",
+                                  "A large, green fruit with a refreshing taste and striped skin",
+                                  "A small, green citrus fruit, often used in cocktails and Mexican cuisine",
+                                  "A yellow citrus fruit, commonly used for its juice and zest in cooking and baking"]
+                case "Nature":
+                    self.words = ["sand", "dirt", "water", "tree", "sea", "plains", "plants"]
+                    self.hints = ["A granular material commonly found on beaches and deserts",
+                                  "Loose, unconsolidated soil often used in gardening and landscaping",
+                                  "A colorless, odorless, and tasteless liquid essential for life on Earth",
+                                  "A large, perennial plant with a trunk that supports branches and leaves",
+                                  "A vast expanse of saltwater that covers about 71% of the Earth's surface",
+                                  "Flat, expansive areas of land with few trees, often used for agriculture",
+                                  "Multicellular, photosynthesizing organisms that form the base of many ecosystems"]
+                case "Colors":
+                    self.words = ["red", "blue", "green", "yellow", "pink", "orange"]
+                    self.hints = ["The color of fire trucks and stop signs, often associated with passion",
+                                  "A cool, calming color found in the sky and the ocean",
+                                  "The color of grass and leaves, often associated with nature and growth",
+                                  "A bright, cheerful color, associated with the sun and flowers like daffodils",
+                                  "A delicate, light color often associated with romance and softness",
+                                  "A vibrant color, the result of mixing red and yellow, associated with citrus fruits and sunsets"]
+        else:
+            for line in self.input_data.splitlines():
+                word, hint = line.strip().split(',', 1)
+                self.words.append(word.strip())
+                self.hints.append(hint.strip())
 
         self.found_words = [False] * len(self.words)
 

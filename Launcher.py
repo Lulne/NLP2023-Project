@@ -191,7 +191,7 @@ user_text_entry_ws.bind('<space>', insert_newline)
 grid_size_dropdown = ttk.Combobox(options_frame, values=[f"{x}x{x}" for x in range(5, 21)], state="readonly", width=20)
 grid_size_dropdown.current(0)
 
-category_dropdown = ttk.Combobox(options_frame, values=["Category 1", "Category 2", "Category 3"], state="readonly", width=20)
+category_dropdown = ttk.Combobox(options_frame, values=["Food", "Nature", "Colors"], state="readonly", width=20)
 category_dropdown.current(0)
 
 text_entry_label = ttk.Label(options_frame, text="Text entry: format as word, hint")
@@ -212,7 +212,7 @@ word_search_mode.bind("<<ComboboxSelected>>", on_word_search_mode_change)
 difficulty_dropdown = ttk.Combobox(options_frame, values=["10x10", "25x25", "50x50", "100x100"], state="readonly", width=20)
 difficulty_dropdown.current(0)
 
-category_dropdown_ws = ttk.Combobox(options_frame, values=["Category 1", "Category 2", "Category 3"], state="readonly", width=20)
+category_dropdown_ws = ttk.Combobox(options_frame, values=["Food", "Nature", "Colors"], state="readonly", width=20)
 category_dropdown_ws.current(0)
 
 num_words_dropdown = ttk.Combobox(options_frame, values=list(range(1, 51)), state="readonly", width=20)
