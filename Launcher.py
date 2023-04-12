@@ -57,6 +57,7 @@ def display_crossword_options():
     user_input_options.grid(row=0, column=0, pady=5)
     grid_size_dropdown.grid(row=1, column=0, pady=5)
     on_user_input_option_change()
+    start_button.config(command=start_crossword_game)
     start_button.grid(row=4, column=0, pady=5)
 
 def display_word_search_options():
@@ -119,6 +120,10 @@ def open_file_ws():
 def insert_newline(event):
     user_text_entry.insert(tk.INSERT, '\n')
 
+    
+def start_crossword_game():
+    global selected_file_path
+    subprocess.run(['python', 'crossword.py', selected_file_path])
 
 def start_word_search_game():
     word_search_mode_option = word_search_mode.get()
